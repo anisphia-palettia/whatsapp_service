@@ -6,7 +6,7 @@ import whatsapp from "./handler/whatsapp.handler";
 
 const app = createApp();
 
-app.use("", cors());
+app.use("*", cors());
 
 app.route("", whatsapp);
 
