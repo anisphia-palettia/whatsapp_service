@@ -37,9 +37,11 @@ whatsapp.get(
     if (!session)
       throw new HTTPException(404, { message: "Session not found" });
     if (session.qr) {
+      const encoded = encodeURIComponent(session.qr);
+      const url = `https://quickchart.io/qr?text=${encoded}`;
       return successResponse(c, {
         message: "QR available",
-        data: { qr: `https://quickchart.io/qr?text=${session.qr}` },
+        data: { qr: url },
       });
     }
     return successResponse(c, {
