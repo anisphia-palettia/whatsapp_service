@@ -38,6 +38,7 @@ whatsapp.post(
     if (!session)
       throw new HTTPException(404, { message: "Session not found" });
 
+    await manager.startOne(session.clientKey);
     return successResponse(c, {
       message: "Session start successfully",
     });
