@@ -5,15 +5,14 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/node": "^24.8.1",
     "prisma": "^6.17.1"
   },
   "scripts": {
-    "start:dev": "Bun --watch src/main.ts",
-    "start": "Bun dist/main.js",
-    "ts:build": "Bun build.ts"
+    "start:dev": "Bun --watch src/main.ts"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.4",

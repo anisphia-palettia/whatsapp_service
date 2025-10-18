@@ -39,7 +39,7 @@ whatsapp.get(
     if (session.qr) {
       return successResponse(c, {
         message: "QR available",
-        data: { qr: session.qr },
+        data: { qr: `https://quickchart.io/qr?text=${session.qr}` },
       });
     }
     return successResponse(c, {
@@ -58,7 +58,9 @@ whatsapp.post(
     const session = manager.get(clientKey);
     if (!session)
       throw new HTTPException(404, { message: "Session not found" });
-    const jid :string = to.includes("@c.us") ? to : "62" + to.replace(/^0/, "") + "@c.us";
+    const jid: string = to.includes("@c.us")
+      ? to
+      : "62" + to.replace(/^0/, "") + "@c.us";
     await session.sendMessage(jid, message);
     return successResponse(c, { message: "Message sent" });
   }
