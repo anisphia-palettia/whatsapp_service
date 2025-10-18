@@ -2,7 +2,9 @@ export default {
   apps: [
     {
       name: "whatsapp_service",
-      script: "bun --watch src/main.ts",
+      script: "src/main.ts",
+      interpreter: "bun",
+      args: ["--watch"]
     }
   ]
 }
