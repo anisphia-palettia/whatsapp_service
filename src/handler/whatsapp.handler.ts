@@ -26,6 +26,24 @@ whatsapp.post(
     });
   }
 );
+
+whatsapp.post(
+  "/:clientKey/start",
+  zodValidator("param", WhatsappSchema.params),
+  async (c) => {
+    const { clientKey } = c.req.valid("param");
+    const session = await prisma.session.findUnique({
+      where: { clientKey },
+    });
+    if (!session)
+      throw new HTTPException(404, { message: "Session not found" });
+
+    return successResponse(c, {
+      message: "Session start successfully",
+    });
+  }
+);
+
 whatsapp.get(
   "/:clientKey/qr",
   zodValidator("param", WhatsappSchema.params),
@@ -58,7 +76,9 @@ whatsapp.post(
     const session = manager.get(clientKey);
     if (!session)
       throw new HTTPException(404, { message: "Session not found" });
-    const jid :string = to.includes("@c.us") ? to : "62" + to.replace(/^0/, "") + "@c.us";
+    const jid: string = to.includes("@c.us")
+      ? to
+      : "62" + to.replace(/^0/, "") + "@c.us";
     await session.sendMessage(jid, message);
     return successResponse(c, { message: "Message sent" });
   }

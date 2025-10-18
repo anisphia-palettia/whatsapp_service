@@ -1,3 +1,4 @@
+import { HTTPException } from "hono/http-exception";
 import prisma from "../lib/prisma.lib";
 import { WhatsAppService } from "../service/whatsapp.service";
 
@@ -11,6 +12,19 @@ export class WhatsAppManagerService {
       this.sessions.set(session.clientKey, wa);
       if (session.status !== "CONNECTED") await wa.init();
     }
+  }
+
+  async startOne(clientKey: string) {
+    const session = await prisma.session.findUnique({
+      where: { clientKey },
+    });
+
+    if (!session)
+      throw new HTTPException(404, { message: "Session not found" });
+
+    const client = new WhatsAppService(session);
+    this.sessions.set(clientKey, client);
+    await client.init();
   }
 
   async create(label: string) {
