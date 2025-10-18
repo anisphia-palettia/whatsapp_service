@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+generator zod {
+  provider = "prisma-zod-generator"
+  output   = "./generated/zod"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SessionStatus {
+  INITIALIZING
+  CONNECTED
+  DISCONNECTED
+  ERROR
+}
+
+model Session {
+  id          String        @id @default(uuid())
+  clientKey   String        @unique @default(uuid())
+  label       String
+  status      SessionStatus @default(INITIALIZING)
+  qr          String?
+  phoneNumber String?
+  data        Json?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
